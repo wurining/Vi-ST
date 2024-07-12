@@ -14,8 +14,8 @@ task_name=eccv model.featrue_key=dinov2_feats_0 \
 model=eccv dataset.cross_val_movie=True dataset.movie_name=movie01,movie03 tags='["eccv"]'
 
 # the predictions will be saved in the following directory
-# Mov1 -> Mov3
+# Mov1 -> Mov2
 checkpoints/0/checkpoints
-# Mov3 -> Mov1
+# Mov2 -> Mov1
 checkpoints/1/checkpoints
 ```

@@ -1,0 +1,6 @@
+- task_name=eccv2
+- model.featrue_key=dinov2_feats_0
+- model=eccv
+- dataset.cross_val_movie=True
+- dataset.movie_name=movie03
+- tags=["eccv"]

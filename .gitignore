@@ -1,0 +1,7 @@
+test.ipynb
+.DS_Store
+*.pdf
+*.log
+tensorboard/
+checkpoints/multirun.yaml
+__pycache__/

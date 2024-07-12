@@ -1,0 +1,23 @@
+_target_: src.models.eccv_module.ViSTModule
+
+optimizer:
+  _target_: torch.optim.AdamW
+  _partial_: true
+  lr: 8e-4
+  weight_decay: 0.1
+
+scheduler:
+  _target_: src.lr_schedulers.OneCycleCos.OneCycleCos
+  _partial_: true
+  lr_min: 1e-4
+  lr_start: 5e-5
+  lr_max: ${model.optimizer.lr}
+  milestones: 5
+  T_max: ${trainer.max_epochs}
+  verbose: true
+
+net: ???
+featrue_key: dinov2_feats_0
+indeces: null
+index_start: 0
+index_length: 90

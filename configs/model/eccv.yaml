@@ -1,0 +1,11 @@
+defaults:
+  - eccv_module.yaml
+
+net:
+  _target_: src.models.components.eccv.ViST
+  video_layers: 6
+  video_dim: 256
+  dinov2_dim: 1024
+  cells: ${model.index_length}
+  grids: 16
+  causal: True

@@ -1,0 +1,9 @@
+_target_: src.data_modules.data_module.TaskV2
+movie_name: movie01
+keys:
+  - spike_avg
+  - rf_to_dinov2
+  - ${model.featrue_key}
+cross_val_movie: False
+batch_size: 16
+random_window_size: 128

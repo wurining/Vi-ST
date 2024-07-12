@@ -1,0 +1,28 @@
+_target_: lightning.pytorch.trainer.Trainer
+
+default_root_dir: ${paths.output_dir}
+
+min_epochs: 1
+max_epochs: 30
+limit_train_batches: 48
+
+accelerator: gpu
+devices: 1
+
+# mixed precision for extra speed-up
+precision: bf16-mixed
+
+# perform a validation loop every N training epochs
+# accumulate_grad_batches: 10
+check_val_every_n_epoch: 1
+
+# set True to to ensure deterministic results
+# makes training slower but gives more reproducibility than just setting seeds
+deterministic: False
+
+enable_model_summary: False
+
+plugins:
+  _target_: src.utils.checkpointio.AsyncTorchCheckpointIO
+
+num_sanity_val_steps: 0

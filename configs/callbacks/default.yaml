@@ -1,0 +1,30 @@
+defaults:
+  - model_checkpoint.yaml
+  - learning_rate_monitor.yaml
+  - model_summary.yaml
+  - rich_progress_bar.yaml
+  - swa.yaml
+  - _self_
+
+model_checkpoint:
+  dirpath: ${paths.output_dir}/checkpoints
+  filename: "epoch_{epoch:03d}"
+  monitor: "val/corr"
+  mode: "max"
+  save_last: True # null
+  save_top_k: 1
+  auto_insert_metric_name: False
+  every_n_epochs: 5
+
+learning_rate_monitor:
+  logging_interval: epoch
+
+model_summary:
+  max_depth: 0
+
+swa:
+  swa_lrs: 1e-4
+  # swa_lrs: 1e-5
+  swa_epoch_start: 20
+  annealing_epochs: 5
+  annealing_strategy: "cos"

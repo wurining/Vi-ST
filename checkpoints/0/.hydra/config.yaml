@@ -1,0 +1,118 @@
+task_name: eccv2
+tags:
+- eccv
+train: true
+test: true
+ckpt_path: null
+seed: null
+use_cudnn_benchmark: true
+dataset:
+  _target_: src.data_modules.data_module.TaskV2
+  movie_name: movie01
+  keys:
+  - spike_avg
+  - spikes
+  - ${model.featrue_key}
+  prefetch_batches: 3
+  cross_val_movie: true
+  batch_size: 16
+  random_window_size: 128
+model:
+  _target_: src.models.eccv_module.ViSTModule
+  optimizer:
+    _target_: torch.optim.AdamW
+    _partial_: true
+    lr: 0.0008
+    weight_decay: 0.1
+  scheduler:
+    _target_: src.lr_schedulers.OneCycleCos.OneCycleCos
+    _partial_: true
+    lr_min: 0.0001
+    lr_start: 5.0e-05
+    lr_max: ${model.optimizer.lr}
+    milestones: 5
+    T_max: ${trainer.max_epochs}
+    verbose: true
+  net:
+    _target_: src.models.components.eccv.ViST
+    video_layers: 6
+    video_dim: 256
+    dinov2_dim: 1024
+    cells: ${model.index_length}
+    grids: 16
+    causal: true
+  featrue_key: dinov2_feats_0
+  indeces: null
+  index_start: 0
+  index_length: 90
+callbacks:
+  model_checkpoint:
+    _target_: lightning.pytorch.callbacks.ModelCheckpoint
+    dirpath: ${paths.output_dir}/checkpoints
+    filename: epoch_{epoch:03d}
+    monitor: val/corr
+    verbose: false
+    save_last: true
+    save_top_k: 1
+    mode: max
+    auto_insert_metric_name: false
+    save_weights_only: false
+    every_n_train_steps: null
+    train_time_interval: null
+    every_n_epochs: 5
+    save_on_train_epoch_end: null
+  vae_prediction_writer:
+    _target_: lightning.pytorch.callbacks.LearningRateMonitor
+    logging_interval: epoch
+    log_momentum: false
+  model_summary:
+    _target_: lightning.pytorch.callbacks.RichModelSummary
+    max_depth: 0
+  rich_progress_bar:
+    _target_: lightning.pytorch.callbacks.RichProgressBar
+  swa:
+    _target_: lightning.pytorch.callbacks.StochasticWeightAveraging
+    swa_lrs: 0.0001
+    swa_epoch_start: 20
+    annealing_epochs: 5
+    annealing_strategy: cos
+  learning_rate_monitor:
+    logging_interval: epoch
+logger:
+  csv:
+    _target_: lightning.pytorch.loggers.csv_logs.CSVLogger
+    save_dir: ${paths.output_dir}
+    name: csv/
+    prefix: ''
+  tensorboard:
+    _target_: lightning.pytorch.loggers.tensorboard.TensorBoardLogger
+    save_dir: ${paths.output_dir}/tensorboard/
+    name: null
+    log_graph: false
+    default_hp_metric: true
+    prefix: ''
+trainer:
+  _target_: lightning.pytorch.trainer.Trainer
+  default_root_dir: ${paths.output_dir}
+  min_epochs: 1
+  max_epochs: 30
+  limit_train_batches: 48
+  accelerator: gpu
+  devices: 1
+  precision: bf16-mixed
+  check_val_every_n_epoch: 1
+  deterministic: false
+  enable_model_summary: false
+  plugins:
+    _target_: src.utils.checkpointio.AsyncTorchCheckpointIO
+  num_sanity_val_steps: 0
+paths:
+  root_dir: ${oc.env:PROJECT_ROOT}
+  data_dir: ${paths.root_dir}/data/
+  log_dir: ${paths.root_dir}/logs/
+  output_dir: ${hydra:runtime.output_dir}
+  work_dir: ${hydra:runtime.cwd}
+extras:
+  ignore_warnings: false
+  enforce_tags: true
+  print_config: true

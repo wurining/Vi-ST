@@ -1,4 +1,4 @@
-# Aligning Neuronal Coding of Dynamic Visual Scenes with Foundation Vision Models
+# Aligning Neuronal Coding of Dynamic Visual Scenes with Foundation Vision Models  (ECCV 2024)
 
 > Due to the dataset size, we had to only include the code part and the checkpoint. The dataset is not included in this repository.
 

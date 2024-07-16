@@ -1,6 +1,7 @@
 test.ipynb
 .DS_Store
 *.pdf
+!12149-supp.pdf
 *.log
 tensorboard/
 checkpoints/multirun.yaml

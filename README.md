@@ -1,6 +1,6 @@
 # Aligning Neuronal Coding of Dynamic Visual Scenes with Foundation Vision Models  (ECCV 2024)
 
-### [Paper](https://www.arxiv.org/abs/2407.10737) | [Supplementary Material](<./docs/12149-supp.pdf>)
+### [Paper](https://www.arxiv.org/abs/2407.10737) | [Supplementary Material](<./docs/12149-supp.pdf>) | [ECCV 2024 Poster](https://eccv.ecva.net/virtual/2024/poster/2181)
 
 ![Model Architecture](./docs/model_fig.png)
 
